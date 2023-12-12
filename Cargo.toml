@@ -13,10 +13,13 @@ include = ["README.md", "LICENSE", "Cargo.toml", "/src/*.rs", "/examples/*.rs", 
 rust-version = "1.74"
 
 [dependencies]
-#proxy-server = { path = "../proxy-server" }
-proxy-server = { version="0.5.2" }
+proxy-server = { path = "../proxy-server" }
+#proxy-server = { version="0.5.2" }
 regex = "1.10.2"
 serde_json = "1.0.108"
 
 [[example]]
 name = "hello-world"
+
+[features]
+napi = ["proxy-server/napi"]
