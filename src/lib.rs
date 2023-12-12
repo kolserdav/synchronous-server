@@ -1,5 +1,4 @@
-use napi::bindgen_prelude::*;
-use napi_derive::napi;
+pub use proxy_server;
 use proxy_server::{
     http::{
         headers::{Header, Headers},
@@ -10,15 +9,11 @@ use proxy_server::{
     prelude::constants::HTTP_VERSION_DEFAULT,
 };
 use serde_json::from_str;
-use std::{io::Write, net::TcpListener, str};
-
-#[napi]
-pub fn server<T>(callback: T) -> Result<()>
-where
-    T: Fn(String) -> Result<(String, u16, String)>,
-{
-    target("127.0.0.1:4001", callback)
-}
+use std::{
+    io::{Result, Write},
+    net::TcpListener,
+    str,
+};
 
 macro_rules! trace {
     ($($args: expr),*) => {
@@ -26,7 +21,7 @@ macro_rules! trace {
     };
 }
 
-pub fn target<T>(addr: &str, callback: T) -> Result<()>
+pub fn listen<T>(addr: &str, callback: T) -> Result<()>
 where
     T: Fn(String) -> Result<(String, u16, String)>,
 {
@@ -161,7 +156,7 @@ where
         );
 
         for h in heads.list {
-            let added_header = res_heads.add_header(h.name.as_str(), h.value.as_str());
+            let added_header = res_heads.set_header(h.name.as_str(), h.value.as_str());
             if let Err(err) = &added_header {
                 println!("Failed to add header {:?}: {:?}: {:?}", err, &h, trace!());
             }
