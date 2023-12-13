@@ -10,23 +10,21 @@ This is a Rust crate called synchronous-server, designed to provide reliable and
 - Built-in support for common HTTP methods (GET, POST, PUT, DELETE)
 - Customizable request and response handling logic
 - Middleware support for adding functionality to requests and responses
-- Integration with popular web frameworks like Rocket and Actix-Web
 
 ## Getting Started
 
 To use this crate, you'll need Rust and Cargo installed. Then, follow these steps:
 
-1. Add the `synchronous-server` dependency to your `Cargo.toml` file:
+1. Install `synchronous-server`:
 
-```toml
-[dependencies]
-synchronous-server = "0.1"
+```sh
+cargo add synchronous-server
 ```
 
 2. Import the crate in your Rust module:
 
 ```rust
-extern crate synchronous_server;
+use synchronous_server::listen;
 ```
 
 3. Create a new `Server` instance with the desired middleware and request/response handlers:

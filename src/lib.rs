@@ -98,7 +98,7 @@ where
             continue;
         }
         req.body = body.unwrap();
-        println!("1 {:?}", &req);
+
         let req_str = serde_json::to_string(&req);
         if let Err(err) = req_str {
             println!(
