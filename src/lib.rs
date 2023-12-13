@@ -8,7 +8,6 @@ use proxy_server::{
     },
     prelude::constants::HTTP_VERSION_DEFAULT,
 };
-use serde_json::from_str;
 use std::{
     io::{Result, Write},
     net::TcpListener,
@@ -23,7 +22,7 @@ macro_rules! trace {
 
 pub fn listen<T>(addr: &str, callback: T) -> Result<()>
 where
-    T: Fn(String) -> Result<(String, u16, String)>,
+    T: Fn(Request) -> Result<(String, u16, Headers)>,
 {
     let listener = TcpListener::bind(addr)?;
     println!("listening on: {}", addr);
@@ -99,19 +98,7 @@ where
         }
         req.body = body.unwrap();
 
-        let req_str = serde_json::to_string(&req);
-        if let Err(err) = req_str {
-            println!(
-                "Failed to stringify request {:?}: {:?}: {:?}",
-                err,
-                &req,
-                trace!()
-            );
-            continue;
-        }
-        let req_str = req_str.unwrap();
-
-        let cb_res = callback(req_str);
+        let cb_res = callback(req.clone());
         if let Err(err) = cb_res {
             println!(
                 "Failed to handle request {:?}: {:?}: {:?}",
@@ -125,18 +112,6 @@ where
 
         let length = result.len();
         let status = Status::new(code);
-        let heads = from_str::<Headers>(headers.as_str());
-        if let Err(err) = &heads {
-            println!(
-                "Failed to parse client headers {:?}: {:?}: {:?}",
-                err,
-                &headers,
-                trace!()
-            );
-            continue;
-        }
-        let heads = heads.unwrap();
-
         let mut res_heads = Headers::new(
             format!("{} {} {}", HTTP_VERSION_DEFAULT, status.code, status.name).as_str(),
             vec![
@@ -155,7 +130,7 @@ where
             ],
         );
 
-        for h in heads.list {
+        for h in headers.list {
             let added_header = res_heads.set_header(h.name.as_str(), h.value.as_str());
             if let Err(err) = &added_header {
                 println!("Failed to add header {:?}: {:?}: {:?}", err, &h, trace!());

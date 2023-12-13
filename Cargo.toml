@@ -1,6 +1,6 @@
 [package]
 name = "synchronous-server"
-version = "0.1.4"
+version = "0.1.5"
 edition = "2021"
 description = "Low level synchronous server"
 authors = ["Sergey Kolmiller <uyem.ru@gmail.com>"]
@@ -15,8 +15,6 @@ rust-version = "1.74"
 [dependencies]
 #proxy-server = { path = "../proxy-server" }
 proxy-server = { version="0.5.2" }
-regex = "1.10.2"
-serde_json = "1.0.108"
 
 [[example]]
 name = "hello-world"

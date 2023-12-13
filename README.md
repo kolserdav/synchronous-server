@@ -7,9 +7,7 @@ This is a Rust crate called synchronous-server, designed to provide reliable and
 ## Features
 
 - Synchronous communication for reliable and predictable behavior
-- Built-in support for common HTTP methods (GET, POST, PUT, DELETE)
 - Customizable request and response handling logic
-- Middleware support for adding functionality to requests and responses
 
 ## Getting Started
 
@@ -27,4 +25,39 @@ cargo add synchronous-server
 use synchronous_server::listen;
 ```
 
-3. Create a new `Server` instance with the desired middleware and request/response handlers:
+3. Create a new `Server` instance with the request handler:
+
+```rust
+use proxy_server::http::headers::{Header, Headers};
+use std::io::Result;
+use synchronous_server::listen;
+
+pub fn main() -> Result<()> {
+    let res = listen("0.0.0.0:4001", |d| {
+        println!("{:?}", d);
+
+        let result = "hello world".to_string();
+        let code = 200;
+        let headers = Headers::new(
+            "HTTP/1.1 200 OK",
+            vec![
+                Header {
+                    name: "Content-Type".to_string(),
+                    value: "text/plain".to_string(),
+                },
+                Header {
+                    name: "Custom-Header".to_string(),
+                    value: "value".to_string(),
+                },
+            ],
+        );
+
+        Ok((result, code, headers))
+    });
+    if let Err(err) = res {
+        println!("Failed to listen server: {:?}", err);
+    }
+
+    Ok(())
+}
+```
