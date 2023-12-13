@@ -1,12 +1,9 @@
 pub use proxy_server;
-use proxy_server::{
-    http::{
-        headers::{Header, Headers},
-        request::{Request, Socket},
-        status::Status,
-        Http,
-    },
-    prelude::constants::HTTP_VERSION_DEFAULT,
+use proxy_server::http::{
+    headers::{Header, Headers},
+    request::{Request, Socket},
+    status::Status,
+    Http,
 };
 use std::{
     io::{Result, Write},
@@ -112,8 +109,8 @@ where
 
         let length = result.len();
         let status = Status::new(code);
-        let mut res_heads = Headers::new(
-            format!("{} {} {}", HTTP_VERSION_DEFAULT, status.code, status.name).as_str(),
+        let mut res_heads = Headers::new_response(
+            &status,
             vec![
                 Header {
                     name: "Content-Type".to_string(),

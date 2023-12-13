@@ -1,4 +1,7 @@
-use proxy_server::http::headers::{Header, Headers};
+use proxy_server::http::{
+    headers::{Header, Headers},
+    status::Status,
+};
 use std::io::Result;
 use synchronous_server::listen;
 
@@ -8,8 +11,8 @@ pub fn main() -> Result<()> {
 
         let result = "hello world".to_string();
         let code = 200;
-        let headers = Headers::new(
-            "HTTP/1.1 200 OK",
+        let headers = Headers::new_request(
+            Status::new(code).to_full_string().as_str(),
             vec![
                 Header {
                     name: "Content-Type".to_string(),
