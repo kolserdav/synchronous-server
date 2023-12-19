@@ -1,6 +1,6 @@
 [package]
 name = "synchronous-server"
-version = "0.1.9"
+version = "0.1.11"
 edition = "2021"
 description = "Low level synchronous server"
 authors = ["Sergey Kolmiller <uyem.ru@gmail.com>"]
@@ -14,10 +14,17 @@ rust-version = "1.74"
 
 [dependencies]
 #proxy-server = { path = "../proxy-server" }
-proxy-server = { version="0.6.2" }
+proxy-server = { version="0.6.4" }
 
 [[example]]
 name = "hello-world"
 
 [features]
 napi = ["proxy-server/napi"]
+chunk_1KB = ["proxy-server/chunk_1KB"]
+chunk_5KB = ["proxy-server/chunk_5KB"]
+chunk_10KB = ["proxy-server/chunk_10KB"]
+chunk_50KB = ["proxy-server/chunk_50KB"]
+chunk_100KB = ["proxy-server/chunk_100KB"]
+chunk_500KB = ["proxy-server/chunk_500KB"]
+chunk_1MB = ["proxy-server/chunk_1MB"]
