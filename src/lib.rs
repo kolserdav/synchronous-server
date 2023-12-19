@@ -1,4 +1,5 @@
 pub use proxy_server;
+pub use proxy_server::http;
 use proxy_server::http::{
     headers::{Header, Headers},
     request::{Request, Socket},

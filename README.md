@@ -28,12 +28,13 @@ use synchronous_server::listen;
 3. Create a new `Server` instance with the request handler:
 
 ```rust
-use proxy_server::http::{
-    headers::{Header, Headers},
-    status::Status,
-};
 use std::io::Result;
-use synchronous_server::listen;
+use synchronous_server::{
+    http::{
+        headers::{Header, Headers},
+        status::Status,
+}, listen
+};
 
 pub fn main() -> Result<()> {
     let res = listen("0.0.0.0:4001", |d| {
@@ -50,7 +51,7 @@ pub fn main() -> Result<()> {
                 },
                 Header {
                     name: "Custom-Header".to_string(),
-                    value: "value".to_string(),
+                    value: "Hello World!".to_string(),
                 },
             ],
         );
