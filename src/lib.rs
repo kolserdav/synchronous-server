@@ -76,7 +76,7 @@ where
             continue;
         }
         let mut req = req.unwrap();
-
+        println!("1 {:?}", &req);
         let body = client.read_body(&req);
         if let Err(err) = body {
             println!("Failed to read body {:?}: {:?}: {:?}", err, &req, trace!());
